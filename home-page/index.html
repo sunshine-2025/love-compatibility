@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>契合度测试平台</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 品牌标识 -->
+    <header>
+        <h1>契合度测试平台</h1>
+        <p>了解你与伴侣的关系</p>
+    </header>
+
+    <!-- 欢迎信息 -->
+    <section>
+        <h2>欢迎使用我们的契合度测试平台</h2>
+        <p>输入你的基本信息，开始测试吧！</p>
+    </section>
+
+    <!-- 输入框 -->
+    <form id="compatibility-form" action="../result-analysis-page/index.html" method="GET">
+        <div class="input-group">
+            <div class="person-info">
+                <label for="your-name">你的姓名：</label>
+                <input type="text" id="your-name" name="your-name" required>
+                
+                <!-- 性别选择 -->
+                <label>你的性别：</label>
+                <label><input type="radio" name="your-gender" value="male" required> 男</label>
+                <label><input type="radio" name="your-gender" value="female" required> 女</label>
+                
+                <label for="your-birthday">你的生日：</label>
+                <input type="date" id="your-birthday" name="your-birthday" required>
+            </div>
+
+            <div class="person-info">
+                <label for="partner-name">伴侣的姓名：</label>
+                <input type="text" id="partner-name" name="partner-name" required>
+                
+                <!-- 性别选择 -->
+                <label>伴侣的性别：</label>
+                <label><input type="radio" name="partner-gender" value="male" required> 男</label>
+                <label><input type="radio" name="partner-gender" value="female" required> 女</label>
+                
+                <label for="partner-birthday">伴侣的生日：</label>
+                <input type="date" id="partner-birthday" name="partner-birthday" required>
+            </div>
+        </div>
+        
+        <!-- 提交按钮 -->
+        <button type="submit">开始测试</button>
+    </form>
+
+    <!-- 用户反馈 -->
+    <section id="user-feedback">
+        <h3>用户评价</h3>
+        <p>"这个测试真的很有趣，结果也很准确！" - 用户A</p>
+    </section>
+
+    <!-- 加载指示 -->
+    <div id="loading-indicator" style="display: none;">
+        <p>正在加载，请稍候...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

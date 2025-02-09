@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试结果</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>测试结果</h1>
+    </header>
+
+    <main>
+        <!-- 契合度评分部分 -->
+        <section id="compatibility-score">
+            <h2>契合度评分</h2>
+            <div class="score-container">
+                <p>您的契合度评分是：<span id="score">60%</span></p>
+            </div>
+        </section>
+
+        <!-- 文字分析部分 -->
+        <section id="text-analysis">
+            <h2>文字分析</h2>
+            <div id="text-analysis-content">
+                <!-- 这里的内容将由 JavaScript 动态生成 -->
+                <p>根据您的测试结果，我们为您提供以下详细分析：</p>
+                <ul>
+                    <li>星座分析：正在分析中...</li>
+                    <li>姓名数理：正在分析中...</li>
+                    <li>生辰八字：正在分析中...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 建议和技巧部分 -->
+        <section id="suggestions">
+            <h2>建议和技巧</h2>
+            <div id="suggestions-content">
+                <!-- 这里的内容将由 JavaScript 动态生成 -->
+                <p>根据您的测试结果，我们建议您：</p>
+                <ul>
+                    <li>正在生成建议...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 重新测试按钮 -->
+        <section id="retest">
+            <button onclick="retest()">重新测试</button>
+        </section>
+    </main>
+
+    <script>
+        // 获取 URL 参数并解码
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // 修改参数名称以匹配首页表单
+        const name = decodeURIComponent(urlParams.get('your-name') || '用户');
+        const partnerName = decodeURIComponent(urlParams.get('partner-name') || '伴侣');
+        const birthday = urlParams.get('your-birthday') || '2000-01-01';
+        const partnerBirthday = urlParams.get('partner-birthday') || '2000-01-01';
+
+        // 显示接收到的参数
+        console.log('接收到的参数：', {
+            name,
+            partnerName,
+            birthday,
+            partnerBirthday
+        });
+
+        // 在页面上显示接收到的参数（用于调试）
+        document.body.insertAdjacentHTML('afterbegin', `
+            <div style="background: #f0f0f0; padding: 10px; margin: 10px; display: block;">
+                <h3>调试信息：</h3>
+                <p>姓名：${name}</p>
+                <p>伴侣姓名：${partnerName}</p>
+                <p>生日：${birthday}</p>
+                <p>伴侣生日：${partnerBirthday}</p>
+            </div>
+        `);
+
+        // 改进名字数理计算方法
+        function calculateNameNumerology(name) {
+            // 简单的中文名字数理计算
+            let total = 0;
+            for (let i = 0; i < name.length; i++) {
+                // 使用 Unicode 码点计算
+                total += name.charCodeAt(i) % 9;
+            }
+            // 确保结果在 1-9 之间
+            return (total % 9) + 1;
+        }
+
+        // 改进星座计算方法，确保正确处理日期
+        function getZodiacSign(dateStr) {
+            try {
+                const [year, month, day] = dateStr.split('-').map(Number);
+                console.log('计算星座的日期：', year, month, day);
+                
+                // 验证日期有效性
+                if (!year || !month || !day) {
+                    console.error('无效的日期格式');
+                    return '未知星座';
+                }
+
+                // 使用更简单和准确的判断方式
+                switch (month) {
+                    case 1:
+                        return day < 20 ? '摩羯座' : '水瓶座';
+                    case 2:
+                        return day < 19 ? '水瓶座' : '双鱼座';
+                    case 3:
+                        return day < 21 ? '双鱼座' : '白羊座';
+                    case 4:
+                        return day < 20 ? '白羊座' : '金牛座';
+                    case 5:
+                        return day < 21 ? '金牛座' : '双子座';
+                    case 6:
+                        return day < 22 ? '双子座' : '巨蟹座';
+                    case 7:
+                        return day < 23 ? '巨蟹座' : '狮子座';
+                    case 8:
+                        return day < 23 ? '狮子座' : '处女座';
+                    case 9:
+                        return day < 23 ? '处女座' : '天秤座';
+                    case 10:
+                        return day < 24 ? '天秤座' : '天蝎座';
+                    case 11:
+                        return day < 23 ? '天蝎座' : '射手座';
+                    case 12:
+                        return day < 22 ? '射手座' : '摩羯座';
+                    default:
+                        return '未知星座';
+                }
+            } catch (error) {
+                console.error('计算星座时出错：', error);
+                return '未知星座';
+            }
+        }
+
+        // 获取星座和数理信息
+        const userZodiac = getZodiacSign(birthday);
+        const partnerZodiac = getZodiacSign(partnerBirthday);
+        const userNumerology = calculateNameNumerology(name);
+        const partnerNumerology = calculateNameNumerology(partnerName);
+
+        // 输出调试信息
+        console.log('计算结果：', {
+            userZodiac,
+            partnerZodiac,
+            userNumerology,
+            partnerNumerology
+        });
+
+        // 计算契合度评分
+        function calculateCompatibilityScore(name, partnerName) {
+            // 检查名字是否是"猪猪"和"鸽鸽"
+            if ((name === '猪猪' && partnerName === '鸽鸽') || (name === '鸽鸽' && partnerName === '猪猪')) {
+                return '100%';
+            }
+            // 生成 60 到 100 之间的随机整数
+            const minScore = 60;
+            const maxScore = 100;
+            const score = Math.floor(Math.random() * (maxScore - minScore + 1)) + minScore;
+            return score + '%';
+        }
+
+        // 获取星座特点描述
+        function getZodiacFeatures(zodiac) {
+            const zodiacFeatures = {
+                '水瓶座': '理性独特，追求自由，富有创造力和人道主义精神',
+                '双鱼座': '浪漫敏感，富有同情心，直觉强，艺术气质浓厚',
+                '白羊座': '勇敢直率，充满活力，富有领导力和开拓精神',
+                '金牛座': '稳重务实，重视物质生活，忠诚可靠',
+                '双子座': '聪明灵活，善于交际，思维活跃，适应力强',
+                '巨蟹座': '重情重义，富有同理心，顾家，保护欲强',
+                '狮子座': '自信阳光，慷慨大方，具有领袖魅力',
+                '处女座': '细心严谨，追求完美，理性务实',
+                '天秤座': '优雅和谐，追求公平，善于交际',
+                '天蝎座': '神秘深邃，意志坚强，洞察力强',
+                '射手座': '乐观开朗，追求自由，思想开放',
+                '摩羯座': '务实稳重，目标明确，责任心强'
+            };
+            return zodiacFeatures[zodiac] || '性格独特';
+        }
+
+        // 获取星座匹配分析
+        function getZodiacCompatibility(zodiac1, zodiac2) {
+            const elements = {
+                '白羊座': '火象', '狮子座': '火象', '射手座': '火象',
+                '金牛座': '土象', '处女座': '土象', '摩羯座': '土象',
+                '双子座': '风象', '天秤座': '风象', '水瓶座': '风象',
+                '巨蟹座': '水象', '天蝎座': '水象', '双鱼座': '水象'
+            };
+
+            const element1 = elements[zodiac1];
+            const element2 = elements[zodiac2];
+
+            if (element1 === element2) {
+                return '你们都属于' + element1 + '星座，性格特质相似，容易产生共鸣，但也需要注意包容对方的个性。';
+            } else if (
+                (element1 === '火象' && element2 === '风象') ||
+                (element1 === '风象' && element2 === '火象') ||
+                (element1 === '土象' && element2 === '水象') ||
+                (element1 === '水象' && element2 === '土象')
+            ) {
+                return '你们的星座元素相生，能够互相促进，形成良好的互补关系。';
+            } else {
+                return '你们的星座元素组合独特，虽然可能存在一些差异，但正是这些差异让你们的关系更加有趣。';
+            }
+        }
+
+        // 获取数理含义
+        function getNumerologyMeaning(number) {
+            const numerologyMeanings = {
+                1: '具有领导才能，独立自主，创造力强',
+                2: '善解人意，富有同情心，适合合作',
+                3: '乐观开朗，表达能力强，创造力丰富',
+                4: '务实稳重，值得信赖，组织能力强',
+                5: '追求自由，适应力强，喜欢冒险',
+                6: '重视和谐，富有责任心，关心他人',
+                7: '智慧深邃，追求完美，直觉敏锐',
+                8: '事业心强，追求成功，领导能力强',
+                9: '胸怀宽广，同情心强，理想主义'
+            };
+            return numerologyMeanings[number] || '性格独特';
+        }
+
+        // 更新页面内容
+        document.getElementById('score').textContent = calculateCompatibilityScore(name, partnerName);
+
+        // 获取星座特点描述
+        const userZodiacFeatures = getZodiacFeatures(userZodiac);
+        const partnerZodiacFeatures = getZodiacFeatures(partnerZodiac);
+
+        // 生辰八字分析函数
+        function getBaziAnalysis(name, birthday) {
+            const baziAnalysis = {
+                '2000-01-01': '您出生在庚辰年，五行属金，性格坚韧，适合从事管理工作。',
+                '2000-02-02': '您出生在庚辰年，五行属木，性格温和，适合从事教育工作。',
+                // 可以添加更多的生日和对应的分析
+            };
+
+            return baziAnalysis[birthday] || '根据您的生辰八字，您具有独特的个性和潜力。';
+        }
+
+        // 获取生辰八字分析
+        const userBaziAnalysis = getBaziAnalysis(name, birthday);
+        const partnerBaziAnalysis = getBaziAnalysis(partnerName, partnerBirthday);
+
+        // 更新文字分析内容
+        const textAnalysisContent = `
+            <p>根据您的测试结果，我们为您提供以下详细分析：</p>
+            <ul>
+                <li>星座分析：${name}是${userZodiac}，${partnerName}是${partnerZodiac}。
+                    ${userZodiac}的特点是${userZodiacFeatures}，
+                    而${partnerZodiac}则${partnerZodiacFeatures}。
+                    ${getZodiacCompatibility(userZodiac, partnerZodiac)}</li>
+                
+                <li>姓名数理：${name}的名字数理为${userNumerology}，代表着${getNumerologyMeaning(userNumerology)}；
+                    ${partnerName}的名字数理为${partnerNumerology}，表示${getNumerologyMeaning(partnerNumerology)}。
+                    这样的数理组合显示出你们在性格上能够互相补充，共同成长。</li>
+                
+                <li>生辰八字：${userBaziAnalysis} ${partnerBaziAnalysis}
+                    通过生辰年月日时的分析，你们的缘分来之不易，值得珍惜。</li>
+            </ul>
+        `;
+        document.getElementById('text-analysis-content').innerHTML = textAnalysisContent;
+
+        // 更新建议和技巧内容
+        const suggestionsContent = `
+            <p>根据您的测试结果，我们建议您：</p>
+            <ul>
+                <li>沟通方面：考虑到${userZodiac}的${userZodiacFeatures}特点，
+                    以及${partnerZodiac}的${partnerZodiacFeatures}特质，
+                    建议你们多进行开放性的交流，相互理解对方的处事方式。
+                    定期安排约会或旅行，增进感情。</li>
+                
+                <li>共同发展：基于你们的性格特点，建议多参与能够发挥各自优势的共同活动。
+                    ${userZodiac}可以在[特长方面]发挥作用，而${partnerZodiac}则可以在[特长方面]展现才能。</li>
+                
+                <li>相处之道：你们的数理组合显示，在日常生活中要注意互相包容。
+                    ${name}要多关注${partnerName}的情感需求，而${partnerName}则要理解${name}的处事方式。</li>
+            </ul>
+            <p>愿你们在爱的旅途中，携手共进，发现生活的美好与无限可能。</p>
+        `;
+        document.getElementById('suggestions-content').innerHTML = suggestionsContent;
+
+        // 重新测试功能
+        function retest() {
+            window.location.href = '../home-page/index.html';  // 使用相对路径
+        }
+    </script>
+</body>
+</html> 
