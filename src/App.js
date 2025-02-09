@@ -1,14 +1,16 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './home-page/index';
+import ResultPage from './result-analysis-page/index';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>欢迎来到爱情兼容性测试网站</h1>
-        <p>在这里，你可以测试你和另一半的兼容性！</p>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/result-analysis-page" element={<ResultPage />} />
+      </Routes>
+    </Router>
   );
 }
 
