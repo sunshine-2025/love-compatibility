@@ -32,7 +32,7 @@ function App() {
 
 function Main() {
   return (
-    <Router>
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/home-page" element={<HomePage />} />
