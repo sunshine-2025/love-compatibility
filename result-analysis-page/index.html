@@ -235,15 +235,54 @@
         const userZodiacFeatures = getZodiacFeatures(userZodiac);
         const partnerZodiacFeatures = getZodiacFeatures(partnerZodiac);
 
-        // 生辰八字分析函数
+        // 生辰八字分析函数（改进版）
         function getBaziAnalysis(name, birthday) {
-            const baziAnalysis = {
-                '2000-01-01': '您出生在庚辰年，五行属金，性格坚韧，适合从事管理工作。',
-                '2000-02-02': '您出生在庚辰年，五行属木，性格温和，适合从事教育工作。',
-                // 可以添加更多的生日和对应的分析
-            };
+            try {
+                // 解析生日日期
+                const [year, month, day] = birthday.split('-').map(Number);
+                
+                // 基础天干地支计算（简化版）
+                const heavenlyStems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+                const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+                const fiveElements = ['木', '火', '土', '金', '水'];
+                
+                // 计算年柱（简化算法，实际需要复杂计算）
+                const stemIndex = (year - 1984) % 10; // 1984是甲子年
+                const branchIndex = (year - 1984) % 12;
+                const yearBazi = heavenlyStems[stemIndex] + earthlyBranches[branchIndex];
+                
+                // 五行属性（根据天干简单判断）
+                const element = fiveElements[Math.floor(stemIndex / 2) % 5];
+                
+                // 月份季节特征
+                const seasons = [
+                    '万物复苏', '春暖花开', '春意盎然', // 1-3月
+                    '夏日炎炎', '万物生长', '盛夏时节', // 4-6月
+                    '秋高气爽', '丰收季节', '金秋时节', // 7-9月
+                    '寒冬腊月', '万物蛰伏', '岁暮天寒'  // 10-12月
+                ];
+                const seasonDesc = seasons[month - 1] || '四季如春';
+                
+                // 日期特征（奇偶日不同）
+                const dayType = day % 2 === 0 ? '阳日出生，性格外向' : '阴日出生，心思细腻';
+                
+                return `${name}生于${yearBazi}年（五行属${element}），${seasonDesc}之际，${dayType}。具有${element}行特质，${getElementTrait(element)}`;
+            } catch (error) {
+                console.error('八字分析出错：', error);
+                return '根据您的生辰八字，显示出独特的命理格局和成长潜力。';
+            }
+        }
 
-            return baziAnalysis[birthday] || '根据您的生辰八字，您具有独特的个性和潜力。';
+        // 新增五行特质描述
+        function getElementTrait(element) {
+            const traits = {
+                '木': '富有创造力，性格坚韧不拔，适合从事教育、艺术相关领域',
+                '火': '热情洋溢，领导力强，适合创业或管理岗位',
+                '土': '稳重务实，值得信赖，适合金融、建筑等稳定行业',
+                '金': '果断坚毅，追求卓越，适合法律、科技领域',
+                '水': '智慧灵动，适应力强，适合贸易、外交工作'
+            };
+            return traits[element] || '天生具有独特的个人魅力和发展潜力';
         }
 
         // 获取生辰八字分析
@@ -259,11 +298,11 @@
                     而${partnerZodiac}则${partnerZodiacFeatures}。
                     ${getZodiacCompatibility(userZodiac, partnerZodiac)}</li>
                 
-                <li>姓名数理：${name}的名字数理为${userNumerology}，代表着${getNumerologyMeaning(userNumerology)}；
-                    ${partnerName}的名字数理为${partnerNumerology}，表示${getNumerologyMeaning(partnerNumerology)}。
+                <li>姓名数理：${name}的名字代表着${getNumerologyMeaning(userNumerology)}；
+                    ${partnerName}的名字表示${getNumerologyMeaning(partnerNumerology)}。
                     这样的数理组合显示出你们在性格上能够互相补充，共同成长。</li>
                 
-                <li>生辰八字：${userBaziAnalysis} ${partnerBaziAnalysis}
+                <li>生辰八字：${userBaziAnalysis}；${partnerBaziAnalysis}
                     通过生辰年月日时的分析，你们的缘分来之不易，值得珍惜。</li>
             </ul>
         `;
