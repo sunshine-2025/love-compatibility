@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   const handleStartTest = () => {
-    window.location.href = 'home-page/index.html'; // 跳转到首页
+    window.location.assign('home-page/index.html'); // 使用 assign 方法跳转
   };
 
   return (
