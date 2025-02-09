@@ -1,10 +1,22 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 
+function HomePage() {
+  return (
+    <div>
+      <h2>欢迎使用我们的契合度测试平台</h2>
+      {/* 其他内容 */}
+    </div>
+  );
+}
+
 function App() {
+  const navigate = useNavigate();
+
   const handleStartTest = () => {
     console.log("按钮被点击了"); // 调试信息
-    window.location.assign('/home-page/index.html'); // 使用绝对路径跳转
+    navigate('/home-page'); // 使用 React Router 的导航
   };
 
   return (
@@ -18,4 +30,15 @@ function App() {
   );
 }
 
-export default App;
+function Main() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/home-page" element={<HomePage />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default Main;
