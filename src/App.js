@@ -3,7 +3,8 @@ import './App.css';
 
 function App() {
   const handleStartTest = () => {
-    window.location.assign('home-page/index.html'); // 使用 assign 方法跳转
+    console.log("按钮被点击了"); // 调试信息
+    window.location.assign('/home-page/index.html'); // 使用绝对路径跳转
   };
 
   return (
