@@ -32,7 +32,11 @@ function App() {
 
 function Main() {
   return (
+<<<<<<< HEAD
     <Router basename="/">
+=======
+    <Router>
+>>>>>>> c1121c969c2dc9fe038376f61c032a56c565f83a
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/home-page" element={<HomePage />} />
